@@ -30,7 +30,7 @@ function DesktopIcon({
     >
       <img src={icon} className="max-w-20 h-auto object-contain" alt={label} />
       <p
-        className={`${labelColor} ${labelWeight} text-xs text-center drop-shadow-xl truncate`}
+        className={`${labelColor} ${labelWeight} text-xs text-slate-200 text-center drop-shadow-2xl truncate`}
       >
         {label}
       </p>

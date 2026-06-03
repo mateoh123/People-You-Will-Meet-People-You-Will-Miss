@@ -47,7 +47,7 @@ function LoveLetterWindow({ onClose }) {
           mode.
         </p>
         <p className="text-xs text-black">
-          An project born out of a deep sadnes, became what I come to recognize
+          A project born out of a deep sadnes, became what I come to recognize
           as my declaration of love for those who’ve decided to stick around me.
         </p>
         <p className="text-xs text-black italic">

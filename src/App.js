@@ -21,8 +21,11 @@ function App() {
   const [showStart, setShowStart] = useState(true);
   const [showIntro, setShowIntro] = useState(false);
   const [showExit, setShowExit] = useState(false);
-  const timerRef = useRef(null);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [showExitIcon, setShowExitIcon] = useState(false);
+
+  const timerRef = useRef(null);
+
   useEffect(() => {
     startExitTimer();
     return () => clearTimeout(timerRef.current);
@@ -42,7 +45,7 @@ function App() {
     timerRef.current = setTimeout(() => {
       setShowExitIcon(true);
       playSound();
-    }, 150000);
+    }, 100000);
   };
 
   const handleExitEnded = () => {
@@ -61,6 +64,9 @@ function App() {
           onClick={handleStart}
         >
           <DesktopIcon icon={introvideoicon} label="mateos_camcorder.mp4" />
+          <p className="!absolute text-white italic text-xs !self-center !bottom-40">
+            Please Turn Up Your Volume
+          </p>
         </div>
       )}
 
@@ -133,11 +139,41 @@ function App() {
             onClick={() => setOpenFolder("project")}
           />
           {showExitIcon && (
-            <DesktopIcon
-              icon={exitvideoicon}
-              label="the_exit.mp4"
-              onClick={() => setShowExit(true)}
-            />
+            <>
+              <DesktopIcon
+                icon={exitvideoicon}
+                label="forever_always.mp4"
+                onClick={() => setShowConfirm(true)}
+              />
+
+              {showConfirm && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 drop-shadow">
+                  <div className="bg-white/80 rounded-xl p-6 flex flex-col items-center gap-2 w-64 shadow-lg">
+                    <p className="text-black font-semibold text-sm">
+                      Are you sure?
+                    </p>
+                    <p className="text-black text-xs">This is the end.</p>
+                    <div className="flex gap-3">
+                      <button
+                        className="px-4 py-1.5 text-sm bg-gray-300 rounded-lg"
+                        onClick={() => setShowConfirm(false)}
+                      >
+                        No
+                      </button>
+                      <button
+                        className="px-4 py-1.5 text-sm bg-black text-white rounded-lg"
+                        onClick={() => {
+                          setShowConfirm(false);
+                          setShowExit(true);
+                        }}
+                      >
+                        Yes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
         {windowOpen && <SDCardWindow onClose={() => setWindowOpen(false)} />}
