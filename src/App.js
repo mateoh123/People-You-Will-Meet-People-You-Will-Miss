@@ -41,6 +41,7 @@ function App() {
     setTimeout(() => {
       if (introVideoRef.current) {
         introVideoRef.current.muted = false;
+        introVideoRef.current.play();
       }
     }, 100);
 
@@ -99,7 +100,6 @@ function App() {
               ref={introVideoRef}
               src={introVideo}
               className="w-screen h-auto"
-              autoPlay
               muted
               playsInline
               onEnded={() => setShowIntro(false)}
@@ -119,7 +119,6 @@ function App() {
               ref={exitVideoRef}
               src={exitVideo}
               className="w-screen h-auto"
-              autoPlay
               muted
               playsInline
               onEnded={handleExitEnded}
@@ -190,6 +189,7 @@ function App() {
                           setTimeout(() => {
                             if (exitVideoRef.current) {
                               exitVideoRef.current.muted = false;
+                              exitVideoRef.current.play();
                             }
                           }, 100);
                         }}
