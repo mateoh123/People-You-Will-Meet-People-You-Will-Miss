@@ -131,7 +131,17 @@ function App() {
               }}
               onLoadedData={() => alert("loaded")}
               onPlay={() => alert("playing")}
-              onError={() => alert("error")}
+              onError={(e) => {
+                const video = e.target;
+
+                alert(
+                  `Error code: ${video.error?.code}\nMessage: ${
+                    video.error?.message || "unknown"
+                  }`,
+                );
+
+                console.log(video.error);
+              }}
             />
           </div>
         )}
