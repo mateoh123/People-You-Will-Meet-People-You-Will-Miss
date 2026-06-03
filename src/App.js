@@ -111,34 +111,29 @@ function App() {
 
       <AnimatePresence>
         {showIntro && (
-          <motion.div
-            className="fixed inset-0 z-50 bg-black flex items-center justify-center"
-            exit={{ scale: 0.8, opacity: 0, y: 20 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+          <div
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "red",
+              zIndex: 9999,
+            }}
           >
-           
             <video
-              ref={introVideoRef}
-              src={introVideo}
-              className="fixed inset-0 w-full h-full object-contain bg-black"
-              autoPlay
-              muted
+              controls
               playsInline
-              preload="auto"
-              onPlay={() => console.log("INTRO PLAYING")}
-              onLoadedData={() => console.log("INTRO LOADED")}
-              onLoadedMetadata={() => console.log("INTRO METADATA")}
-              onError={(e) => {
-                console.log("INTRO VIDEO ERROR");
-                console.log(e);
-                console.log(introVideoRef.current?.error);
+              muted
+              src={introVideo}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
               }}
-              onEnded={() => {
-                console.log("INTRO VIDEO ENDED");
-                setShowIntro(false);
-              }}
+              onLoadedData={() => alert("loaded")}
+              onPlay={() => alert("playing")}
+              onError={() => alert("error")}
             />
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
