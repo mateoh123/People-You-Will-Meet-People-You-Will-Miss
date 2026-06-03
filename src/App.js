@@ -31,8 +31,11 @@ function App() {
 
   useEffect(() => {
     startExitTimer();
-    return () => clearTimeout(timerRef.current);
-  });
+
+    return () => {
+      clearTimeout(timerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (showIntro && introVideoRef.current) {
