@@ -121,7 +121,7 @@ function App() {
               src={introVideo}
               className="w-screen h-auto"
               autoPlay
-              muted
+              controls
               playsInline
               preload="auto"
               onEnded={() => setShowIntro(false)}
@@ -142,7 +142,7 @@ function App() {
               src={exitVideo}
               className="fixed inset-0 w-full h-full object-contain bg-black"
               autoPlay
-              muted
+              controls
               playsInline
               preload="auto"
               onPlay={() => console.log("OUTRO PLAYING")}
