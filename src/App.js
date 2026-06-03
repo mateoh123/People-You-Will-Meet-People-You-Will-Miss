@@ -34,25 +34,35 @@ function App() {
     return () => clearTimeout(timerRef.current);
   });
 
+  useEffect(() => {
+    if (showIntro && introVideoRef.current) {
+      introVideoRef.current.play().catch((err) => {
+        console.log("Intro video play failed:", err);
+      });
+    }
+  }, [showIntro]);
+
+  useEffect(() => {
+    if (showExit && exitVideoRef.current) {
+      exitVideoRef.current.play().catch((err) => {
+        console.log("Exit video play failed:", err);
+      });
+    }
+  }, [showExit]);
+
   const handleStart = () => {
     setShowStart(false);
     setShowIntro(true);
 
-    setTimeout(() => {
-      if (introVideoRef.current) {
-        introVideoRef.current.muted = false;
-        introVideoRef.current.play();
-      }
-    }, 100);
-
     audioRef.current = new Audio(AirdropSound);
     audioRef.current.volume = 0;
+
     audioRef.current.play().catch(() => {});
+
     audioRef.current.pause();
     audioRef.current.currentTime = 0;
     audioRef.current.volume = 1;
   };
-
   const playSound = () => {
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
@@ -100,8 +110,10 @@ function App() {
               ref={introVideoRef}
               src={introVideo}
               className="w-screen h-auto"
+              autoPlay
               muted
               playsInline
+              preload="auto"
               onEnded={() => setShowIntro(false)}
             />
           </motion.div>
@@ -119,8 +131,10 @@ function App() {
               ref={exitVideoRef}
               src={exitVideo}
               className="w-screen h-auto"
+              autoPlay
               muted
               playsInline
+              preload="auto"
               onEnded={handleExitEnded}
             />
           </motion.div>
@@ -186,12 +200,6 @@ function App() {
                         onClick={() => {
                           setShowConfirm(false);
                           setShowExit(true);
-                          setTimeout(() => {
-                            if (exitVideoRef.current) {
-                              exitVideoRef.current.muted = false;
-                              exitVideoRef.current.play();
-                            }
-                          }, 100);
                         }}
                       >
                         Yes
