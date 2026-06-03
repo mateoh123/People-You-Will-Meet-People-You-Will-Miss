@@ -111,39 +111,22 @@ function App() {
 
       <AnimatePresence>
         {showIntro && (
-          <div
-            style={{
-              position: "fixed",
-              inset: 0,
-              background: "red",
-              zIndex: 9999,
-            }}
+          <motion.div
+            className="fixed inset-0 z-50 bg-black flex items-center justify-center"
+            exit={{ scale: 0.8, opacity: 0, y: 20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <video
-              controls
-              playsInline
-              muted
+              ref={introVideoRef}
               src={introVideo}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-              }}
-              onLoadedData={() => alert("loaded")}
-              onPlay={() => alert("playing")}
-              onError={(e) => {
-                const video = e.target;
-
-                alert(
-                  `Error code: ${video.error?.code}\nMessage: ${
-                    video.error?.message || "unknown"
-                  }`,
-                );
-
-                console.log(video.error);
-              }}
+              className="w-screen h-auto"
+              autoPlay
+              muted
+              playsInline
+              preload="auto"
+              onEnded={() => setShowIntro(false)}
             />
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
