@@ -25,6 +25,7 @@ function App() {
   const [showExitIcon, setShowExitIcon] = useState(false);
 
   const timerRef = useRef(null);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     startExitTimer();
@@ -34,11 +35,20 @@ function App() {
   const handleStart = () => {
     setShowStart(false);
     setShowIntro(true);
+
+    audioRef.current = new Audio(AirdropSound);
+    audioRef.current.volume = 0;
+    audioRef.current.play().catch(() => {});
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+    audioRef.current.volume = 1;
   };
 
   const playSound = () => {
-    const airdropfx = new Audio(AirdropSound);
-    airdropfx.play();
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    }
   };
 
   const startExitTimer = () => {
