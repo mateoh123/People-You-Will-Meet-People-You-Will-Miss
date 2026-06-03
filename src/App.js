@@ -30,7 +30,10 @@ function App() {
   const exitVideoRef = useRef(null);
 
   useEffect(() => {
-    startExitTimer();
+    timerRef.current = setTimeout(() => {
+      setShowExitIcon(true);
+      playSound();
+    }, 100000);
 
     return () => {
       clearTimeout(timerRef.current);
@@ -38,8 +41,14 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (showIntro && introVideoRef.current) {
-      introVideoRef.current.play().catch((err) => {
+    if (!showIntro) return;
+
+    const video = introVideoRef.current;
+
+    if (video) {
+      video.currentTime = 0;
+
+      video.play().catch((err) => {
         console.log("Intro video play failed:", err);
       });
     }
@@ -73,19 +82,17 @@ function App() {
     }
   };
 
-  const startExitTimer = () => {
-    timerRef.current = setTimeout(() => {
-      setShowExitIcon(true);
-      playSound();
-    }, 100000);
-  };
-
   const handleExitEnded = () => {
     setShowExit(false);
     setShowExitIcon(false);
     setShowStart(true);
+
     clearTimeout(timerRef.current);
-    startExitTimer();
+
+    timerRef.current = setTimeout(() => {
+      setShowExitIcon(true);
+      playSound();
+    }, 100000);
   };
 
   return (
@@ -109,15 +116,27 @@ function App() {
             exit={{ scale: 0.8, opacity: 0, y: 20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
+           
             <video
               ref={introVideoRef}
               src={introVideo}
-              className="w-screen h-auto"
+              className="fixed inset-0 w-full h-full object-contain bg-black"
               autoPlay
               muted
               playsInline
               preload="auto"
-              onEnded={() => setShowIntro(false)}
+              onPlay={() => console.log("INTRO PLAYING")}
+              onLoadedData={() => console.log("INTRO LOADED")}
+              onLoadedMetadata={() => console.log("INTRO METADATA")}
+              onError={(e) => {
+                console.log("INTRO VIDEO ERROR");
+                console.log(e);
+                console.log(introVideoRef.current?.error);
+              }}
+              onEnded={() => {
+                console.log("INTRO VIDEO ENDED");
+                setShowIntro(false);
+              }}
             />
           </motion.div>
         )}
@@ -133,11 +152,17 @@ function App() {
             <video
               ref={exitVideoRef}
               src={exitVideo}
-              className="w-screen h-auto"
+              className="fixed inset-0 w-full h-full object-contain bg-black"
               autoPlay
               muted
               playsInline
               preload="auto"
+              onPlay={() => console.log("OUTRO PLAYING")}
+              onLoadedData={() => console.log("OUTRO LOADED")}
+              onError={(e) => {
+                console.log("OUTRO VIDEO ERROR");
+                console.log(e);
+              }}
               onEnded={handleExitEnded}
             />
           </motion.div>
