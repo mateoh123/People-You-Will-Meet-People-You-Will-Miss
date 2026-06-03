@@ -26,6 +26,8 @@ function App() {
 
   const timerRef = useRef(null);
   const audioRef = useRef(null);
+  const introVideoRef = useRef(null);
+  const exitVideoRef = useRef(null);
 
   useEffect(() => {
     startExitTimer();
@@ -35,6 +37,12 @@ function App() {
   const handleStart = () => {
     setShowStart(false);
     setShowIntro(true);
+
+    setTimeout(() => {
+      if (introVideoRef.current) {
+        introVideoRef.current.muted = false;
+      }
+    }, 100);
 
     audioRef.current = new Audio(AirdropSound);
     audioRef.current.volume = 0;
@@ -88,9 +96,11 @@ function App() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <video
+              ref={introVideoRef}
               src={introVideo}
               className="w-screen h-auto"
               autoPlay
+              muted
               playsInline
               onEnded={() => setShowIntro(false)}
             />
@@ -106,9 +116,11 @@ function App() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <video
+              ref={exitVideoRef}
               src={exitVideo}
               className="w-screen h-auto"
               autoPlay
+              muted
               playsInline
               onEnded={handleExitEnded}
             />
@@ -175,6 +187,11 @@ function App() {
                         onClick={() => {
                           setShowConfirm(false);
                           setShowExit(true);
+                          setTimeout(() => {
+                            if (exitVideoRef.current) {
+                              exitVideoRef.current.muted = false;
+                            }
+                          }, 100);
                         }}
                       >
                         Yes
